@@ -19,10 +19,28 @@ interface SliderProps {
 }
 
 const SettingSlider: React.FC<SliderProps> = ({ label, value, min, max, step, onChange, onNumberChange }) => {
+  const [inputValue, setInputValue] = React.useState(Math.round(value).toString());
+
+  // 當外部 value 變化時，同步更新 inputValue
+  React.useEffect(() => {
+    setInputValue(Math.round(value).toString());
+  }, [value]);
+
   const handleNumberInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = Number(e.target.value);
+    const inputText = e.target.value;
+    setInputValue(inputText); // 立即更新顯示的值
+    
+    const newValue = Number(inputText);
     if (!isNaN(newValue) && newValue >= min && newValue <= max) {
       onNumberChange(newValue);
+    }
+  };
+
+  const handleBlur = () => {
+    // 當失去焦點時，如果輸入值無效，恢復為當前有效值
+    const newValue = Number(inputValue);
+    if (isNaN(newValue) || newValue < min || newValue > max) {
+      setInputValue(Math.round(value).toString());
     }
   };
 
@@ -35,8 +53,9 @@ const SettingSlider: React.FC<SliderProps> = ({ label, value, min, max, step, on
               min={min}
               max={max}
               step={step}
-              value={Math.round(value)}
+              value={inputValue}
               onChange={handleNumberInput}
+              onBlur={handleBlur}
               className="w-16 text-xs bg-gray-700 text-white px-2 py-1 rounded border border-gray-600 focus:border-blue-500 focus:outline-none text-center"
             />
         </div>
