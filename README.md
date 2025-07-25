@@ -13,6 +13,7 @@
 
 ## 🚀 在線使用
 
+<<<<<<< HEAD
 立即訪問：**[https://fcevo123.github.io/my-gemini-pdf-app/](https://fcevo123.github.io/my-gemini-pdf-app/)**
 
 ## 📖 使用說明
